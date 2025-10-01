@@ -1,16 +1,23 @@
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall
+CXXFLAGS = -std=c++17 -Wall
 TARGET = triangles
+TEST_TARGET = triangles_test
 
 all: $(TARGET)
 
-$(TARGET): geometry.cpp triangles.cpp
-	$(CXX) $(CXXFLAGS) geometry.cpp triangles.cpp -o $(TARGET)
+$(TARGET): triangles.cpp geometry.cpp
+	$(CXX) $(CXXFLAGS) triangles.cpp geometry.cpp -o $(TARGET)
+
+$(TEST_TARGET): tests.cpp geometry.cpp geometry.hpp
+	$(CXX) $(CXXFLAGS) tests.cpp geometry.cpp -o $(TEST_TARGET)
 
 run: $(TARGET)
 	./$(TARGET)
 
-clean:
-	rm -f $(TARGET)
+tests: $(TEST_TARGET)
+	./$(TEST_TARGET)
 
-.PHONY: all run clean
+clean:
+	rm -f $(TARGET) $(TEST_TARGET)
+
+.PHONY: all run test clean

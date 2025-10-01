@@ -1,6 +1,18 @@
+#pragma once
+
+#include <unordered_map>
+#include <vector>
+
 #include <math.h>
 
 const float EPSILON = 1e-6f;
+
+enum Parallel_Or_Not
+{
+    NOT_PARALLEL,
+    IN_THE_SAME_PLANE,
+    IN_PARALLEL_PLANES
+};
 
 // vect struct
 template <typename T> class vect_t
@@ -51,7 +63,7 @@ public:
         );
     }
 
-
+    // operator == to compare vectors
     bool operator==(const vect_t& other) const 
     {
         vect_t<T> dif_res (x - other.getX(), y - other.getY(), z - other.getZ());
@@ -107,10 +119,30 @@ public:
 };
 
 
-enum Parallel_Or_Not
-{
-    NOT_PARALLEL,
-    IN_THE_SAME_PLANE,
-    IN_PARALLEL_PLANES
-};
+// check if coord are valid
+bool is_valid_triangle(const std::vector<point_t<float>>& pts);
 
+// check if tringles in parallel planes
+enum Parallel_Or_Not check_if_parallel(const vect_t<float>& normal_vec_first, const vect_t<float>& normal_vec_second, const point_t<float>& point_in_second, const point_t<float>& point_in_first);
+
+
+bool check_the_edge_axes(const std::vector<vect_t<float>>& i_triangle, 
+                        const std::vector<vect_t<float>>& j_triangle, 
+                        const std::unordered_map<int, std::vector<point_t<float>>> &hash_of_triangles,
+                        int tri_i_index, int tri_j_index);
+
+bool check_the_axes_on_plane(const std::vector<vect_t<float>>& i_triangle, 
+                        const std::vector<vect_t<float>>& j_triangle, 
+                        const std::unordered_map<int, std::vector<point_t<float>>>& hash_of_triangles,
+                        int tri_i_index, int tri_j_index, 
+                        const vect_t<float>& normal_vect);
+
+std::vector<int> find_answer(const std::unordered_map<int, std::vector<point_t<float>>> &hash_of_triangles, int N);
+
+template <typename T> 
+vect_t<T> create_vector_between(const point_t<T> from, const point_t<T> to) 
+{
+    return vect_t<T>(to.getX() - from.getX(), 
+                    to.getY() - from.getY(), 
+                    to.getZ() - from.getZ());
+}
