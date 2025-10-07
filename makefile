@@ -5,14 +5,18 @@ TEST_TARGET = triangles_test
 
 all: $(TARGET)
 
-$(TARGET): triangles.cpp geometry.cpp
-	$(CXX) $(CXXFLAGS) triangles.cpp geometry.cpp -o $(TARGET)
+$(TARGET): triangles.cpp
+	$(CXX) $(CXXFLAGS) triangles.cpp -o $(TARGET)
 
-$(TEST_TARGET): tests.cpp geometry.cpp geometry.hpp
-	$(CXX) $(CXXFLAGS) tests.cpp geometry.cpp -o $(TEST_TARGET)
+$(TEST_TARGET): tests.cpp geometry.hpp
+	$(CXX) $(CXXFLAGS) tests.cpp -o $(TEST_TARGET)
 
 run: $(TARGET)
 	./$(TARGET)
+
+run-file: $(TARGET)
+	@echo "Запуск на файле: $(TEST)"
+	./$(TARGET) < $(TEST)
 
 tests: $(TEST_TARGET)
 	./$(TEST_TARGET)

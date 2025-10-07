@@ -3,6 +3,7 @@
 #include <vector>
 #include <limits>
 #include <algorithm>
+#include <array>
 
 #include "geometry.hpp"
 
@@ -11,24 +12,26 @@ int main()
     int N = 0;
     std::cin >> N;
 
-    std::unordered_map<int, std::vector<point_t<float>>> hash_of_triangles;
+    std::vector<Triangle<float>> triangles;
 
     float x, y, z;
 
     for (int i = 0; i < N; i++)
     {
-        for (int j = 0; j < 3; j++)
-        {
-            std::cin >> x >> y >> z;
-            point_t<float> point(x, y, z);
+        std::cin >> x >> y >> z;
+        point_t<float> point1(x, y, z);
 
-            hash_of_triangles[i].push_back(point);
-        }
+        std::cin >> x >> y >> z;
+        point_t<float> point2(x, y, z);
+
+        std::cin >> x >> y >> z;
+        point_t<float> point3(x, y, z);
+
+        Triangle<float> tr_i(point1, point2, point3);
+        triangles.push_back(tr_i);
     }
 
-    std::vector<int> answer = find_answer(hash_of_triangles, N);
-
-    std::sort(answer.begin(), answer.end());
+    std::vector<int> answer = find_answer_with_grid(triangles);
 
     for (int i : answer)
     {
