@@ -2,11 +2,12 @@
 
 #include <unordered_set>
 #include <map>
-#include <tuple>        
+#include <vector>       
 #include <array>       
 #include <algorithm>    
 #include <cmath>        
-#include <limits>       
+#include <limits>  
+#include <utility>     
 
 const float EPSILON = 1e-6f;
 
@@ -217,8 +218,8 @@ public:
         float max_y = std::max({points[0].getY(), points[1].getY(), points[2].getY()});
         float max_z = std::max({points[0].getZ(), points[1].getZ(), points[2].getZ()});
 
-        return {point_t<float>(min_x, min_y, min_z),
-                point_t<float>(max_x, max_y, max_z)};
+        return {point_t<T>(min_x, min_y, min_z),
+                point_t<T>(max_x, max_y, max_z)};
     }
 
     // геттер
@@ -423,7 +424,7 @@ std::vector<int> find_answer_with_grid(const std::vector<Triangle<T>>& triangles
     auto [world_min, world_max] = compute_global_bbox(triangles);
 
     float max_d = find_max_diam(triangles);
-    float cell_size = (max_d < EPSILON) ? 1.0f : max_d * max_d;
+    float cell_size = (max_d < EPSILON) ? 1.0f : max_d * 2.0f;
 
 
     auto grid = build_uniform_grid(triangles, world_min, cell_size);
@@ -431,9 +432,12 @@ std::vector<int> find_answer_with_grid(const std::vector<Triangle<T>>& triangles
     std::unordered_set<int> collided;
 
     // проверка внутри ячейки
-    for (const auto& [cell_key, indices] : grid) {
-        for (size_t i = 0; i < indices.size(); ++i) {
-            for (size_t j = i + 1; j < indices.size(); ++j) {
+    for (const auto& [cell_key, indices] : grid) 
+    {
+        for (size_t i = 0; i < indices.size(); ++i) 
+        {
+            for (size_t j = i + 1; j < indices.size(); ++j) 
+            {
                 int idx_a = indices[i];
                 int idx_b = indices[j];
 

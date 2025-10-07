@@ -1,9 +1,6 @@
 #include <iostream>
-#include <unordered_map>
 #include <vector>
-#include <limits>
 #include <algorithm>
-#include <array>
 
 #include "geometry.hpp"
 
