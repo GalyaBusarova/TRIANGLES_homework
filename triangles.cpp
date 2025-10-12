@@ -32,10 +32,8 @@ int main()
 
     for (int i : answer)
     {
-        std::cout << i << " ";
+        std::cout << i << std::endl;
     }
-
-    std::cout << std::endl;
 }
 
 
